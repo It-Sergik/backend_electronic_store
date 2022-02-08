@@ -7,7 +7,7 @@ class DeviceController{
     async create(req, res){
         try {
             let {name, price, info} = req.body;
-            const {img} = req.files();
+            const {img} = req.files;
             let fileName = uuid.v4() + '.jpg';
             await img.mv(path.resolve(__dirname, '..', 'static', fileName));
             const device = await Device.create({name, price, img: fileName});
@@ -64,7 +64,20 @@ class DeviceController{
     }
 
     async update(req, res){
+        const id = req.query.id;
+        const {img} = req.files;
+        let fileName = uuid.v4() + '.jpg';
+        await img.mv(path.resolve(__dirname, '..', 'static', fileName));
 
+        await Device.findByPk(id).then((device)=>{
+            device.update({
+                name: req.body.name,
+                price: req.body.price,
+                img: fileName,
+            })
+        })
+
+        return res.json('Запись обновлена');
     }
 
 }
