@@ -52,13 +52,13 @@ class DeviceController{
     }
 
     async getOne(req, res){
-        const id = req.query;
+        const id = req.query.id;
         const device = await Device.findOne({where: {id}});
         return res.json(device);
     }
 
     async delete(req, res){
-        const id = req.query;
+        const id = req.query.id;
         const device = await Device.destroy({where: {id}});
         return res.json(device);
     }
@@ -76,7 +76,6 @@ class DeviceController{
                 img: fileName,
             })
         })
-
         return res.json('Запись обновлена');
     }
 
